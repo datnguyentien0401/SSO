@@ -170,9 +170,10 @@ public class UserServiceImpl implements UserService {
 		userEntity.setLastName(userEntityInput.getLastName());
 		userEntity.setPassword(this.passwordEncoder.encode(this.defaultPassword));
 		userEntity.setEnabled(userEntityInput.getEnabled());
-		if (userEntity.getEnabled() == null) {
-			userEntity.setEnabled(false);
-		}
+//		if (userEntity.getEnabled() == null) {
+//			userEntity.setEnabled(false);
+//		}
+        userEntity.setEnabled(true);
 		userEntity = this.userRepository.save(userEntity);
 
 		if ((userEntityInput.getRoles() != null) && !userEntityInput.getRoles().isEmpty()) {
