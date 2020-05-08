@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="17" status="DEBUG">
+
+	<Properties>
+		<Property name="LOG_PATTERN">
+			%d{yyyy-MM-dd HH:mm:ss.SSSZ} [%t] %p [%c{10}: %L] \t%m%n
+		</Property>
+		<Property name="LOG_DIR">
+			D:\Logs\SSO
+		</Property>
+	</Properties>
+
+	<Loggers>
+
+		<Root level="ERROR">
+			<AppenderRef ref="Console" />
+		</Root>
+		<Logger name="com.tsolution" level="INFO" additivity="false">
+			<AppenderRef ref="debugLog" />
+			<AppenderRef ref="errorLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+		<Logger name="org.springframework" level="INFO"
+			additivity="false">
+			<AppenderRef ref="springLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+		<Logger name="org.hibernate.SQL" level="DEBUG"
+			additivity="false">
+			<AppenderRef ref="hibernateLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.hibernate.type.descriptor.sql.BasicBinder"
+			level="TRACE" additivity="false">
+			<AppenderRef ref="hibernateLog" />
+			<AppenderRef ref="Console" />
+		</Logger>
+
+	</Loggers>
+
+	<Appenders>
+
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+
+		<RollingFile name="debugLog"
+			fileName="${LOG_DIR}/application-debug.log"
+			filePattern="${LOG_DIR}/application-debug-%d{yyyy-MM-dd}.log">
+			<LevelRangeFilter maxLevel="DEBUG" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="errorLog"
+			fileName="${LOG_DIR}/application-error.log"
+			filePattern="${LOG_DIR}/application-error-%d{yyyy-MM-dd}.log">
+			<LevelRangeFilter minLevel="ERROR" maxLevel="ERROR"
+				onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="springLog"
+			fileName="${LOG_DIR}/spring.log"
+			filePattern="${LOG_DIR}/spring-%d{yyyy-MM-dd}.log">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" />
+				<!-- <SizeBasedTriggeringPolicy size="1 KB" /> -->
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+		<RollingFile name="hibernateLog"
+			fileName="${LOG_DIR}/hibernate.log"
+			filePattern="${LOG_DIR}/hibernate-%d{yyyy-MM-dd}.log">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" />
+				<!-- <SizeBasedTriggeringPolicy size="1 KB" /> -->
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+
+	</Appenders>
+
+</Configuration>
