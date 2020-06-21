@@ -1,9 +1,7 @@
 package com.tsolution.sso._4Controller;
 
 import java.security.Principal;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tsolution.sso._1Entities.dto.ChangePasswordRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +21,11 @@ import com.tsolution.sso.utils.Translator;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
+
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
 	@GetMapping("/me")
 	public Principal user(Principal principal) {
@@ -49,51 +50,50 @@ public class UserController {
 
 	@GetMapping("/find")
 	public ResponseEntity<Object> getAll(@RequestParam(value = "text", required = false) String text,
-			@RequestParam(value = "pageNumber", required = true) Integer pageNumber,
-			@RequestParam(value = "pageSize", required = true) Integer pageSize) throws Exception {
+			@RequestParam(value = "pageNumber") Integer pageNumber,
+			@RequestParam(value = "pageSize") Integer pageSize) throws Exception {
 		text = text == null ? "" : text;
 		return this.userService.find(text, text, text, pageNumber, pageSize);
 	}
 
 	@PostMapping("/change-password")
 	public ResponseEntity<Object> changePassword(
-			@RequestParam(value = "oldPassword", required = true) String oldPassword,
-			@RequestParam(value = "newPassword", required = true) String newPassword,
-			@RequestParam(value = "newConfirmPassword", required = true) String newConfirmPassword) throws Exception {
-		return this.userService.changePassword(oldPassword, newPassword, newConfirmPassword);
+			@RequestBody ChangePasswordRequestDto requestDto) throws Exception {
+		return this.userService.changePassword(requestDto.getPassword(), requestDto.getNewPassword(), requestDto.getNewPasswordConfirm());
 	}
 
 	@PostMapping("/active")
-	public ResponseEntity<Object> active(@RequestBody(required = true) String username) throws BusinessException {
+	public ResponseEntity<Object> active(@RequestBody String username) throws BusinessException {
 		return this.userService.active(username);
 	}
 
 	@PostMapping("/deactive")
-	public ResponseEntity<Object> deactive(@RequestBody(required = true) String username) throws BusinessException {
+	public ResponseEntity<Object> deactive(@RequestBody String username) throws BusinessException {
 		return this.userService.deactive(username);
 	}
 
 	@PostMapping("/reset-password")
-	public ResponseEntity<Object> resetPassword(@RequestBody(required = true) String username)
+	public ResponseEntity<Object> resetPassword(@RequestBody String username)
 			throws BusinessException {
 		return this.userService.resetPassword(username);
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> create(@RequestBody Optional<UserEntity> userEntityInput) throws Exception {
-		if (!userEntityInput.isPresent()) {
+	public ResponseEntity<Object> create(@RequestBody UserEntity userEntityInput) throws Exception {
+		if (userEntityInput == null) {
 			throw new BusinessException(Translator.toLocale("common.input.info.invalid"));
 		}
-		return this.userService.create(userEntityInput.get());
+		return this.userService.create(userEntityInput);
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody Optional<UserEntity> userEntityInput)
+	public ResponseEntity<Object> update(@PathVariable("id") Long id,
+										 @RequestBody UserEntity userEntityInput)
 			throws Exception {
-		if (!userEntityInput.isPresent()) {
+		if (userEntityInput == null) {
 			throw new BusinessException(Translator.toLocale("common.input.info.invalid"));
 		}
-		return this.userService.update(id, userEntityInput.get());
+		return this.userService.update(id, userEntityInput);
 	}
 
 	@DeleteMapping("/{id}")
