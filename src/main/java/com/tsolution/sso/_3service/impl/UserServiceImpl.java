@@ -49,6 +49,9 @@ public class UserServiceImpl implements UserService {
 				|| StringUtils.isNullOrEmpty(newConfirmPassword)) {
 			throw new BusinessException(Translator.toLocale("common.input.info.invalid"));
 		}
+		if (newPassword.length() < 8) {
+			throw new BusinessException(Translator.toLocale("user.input.new.password.character.length.invalid"));
+		}
 		if (!newPassword.equalsIgnoreCase(newConfirmPassword)) {
 			throw new BusinessException(Translator.toLocale("user.input.new.password.invalid"));
 		}
