@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -185,6 +186,12 @@ public class UserServiceImpl implements UserService {
 			userEntity.setRoles(roles);
 		}
 		return new ResponseEntity<>(this.userRepository.save(userEntity), HttpStatus.OK);
+	}
+
+	public static void main(String[] args) {
+		PasswordEncoder pe = new BCryptPasswordEncoder();
+		String pass = pe.encode("abc@123");
+		System.out.println(pass);
 	}
 
 	@Override
