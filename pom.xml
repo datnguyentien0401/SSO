@@ -25,7 +25,7 @@
 		<start-class>com.tsolution.sso.SpringBootSingleSignOnOAuth2Application</start-class>
 
 		<!-- DEPENDENCY MANAGERMENT -->
-		<spring-framework-bom.version>5.1.8.RELEASE</spring-framework-bom.version>
+		<spring-framework-bom.version>5.1.18.RELEASE</spring-framework-bom.version>
 		<spring-data-releasetrain.version>Lovelace-RELEASE</spring-data-releasetrain.version>
 		<spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
 		<io.pivotal-spring-cloud-services-dependencies.version>2.1.4.RELEASE</io.pivotal-spring-cloud-services-dependencies.version>
